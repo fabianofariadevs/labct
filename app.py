@@ -16,7 +16,7 @@ from sqlalchemy import func
 from decimal import Decimal
 
 from config import Config
-from labct.db import db, ma, login_manager, app
+from db import db, ma, login_manager, app
 
 
 from models import fornecedores_model, materiasprimas_model, estoque_model, historico_model, inventario_model, inventariodados_model, compras_model, comprasdados_model, usuarios_model, config_model, receitas_model, receitasmateriaprimas_model
