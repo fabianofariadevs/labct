@@ -1,0 +1,79 @@
+<!-- templates/login.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
+</head>
+
+<style>
+    body {
+        font-family: "DM Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    .loginContainer {
+        width: 100%;
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow-y: hidden;
+        text-align: center;
+    }
+
+    .loginInput {
+        display: flex;
+        flex-direction: column;
+        margin-block: 15px;
+    }
+
+    .loginBtn {
+        width: 185px;
+        padding: 5px;
+        margin-top: 18px;
+    }
+</style>
+
+<body>
+    <div class="loginContainer">
+        <h1>Login</h1>
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+        <form action="/login" method="post">
+            <div class="loginInput">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="loginInput">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <input type="hidden" name="next" value="{{ request.args.get('next', '') }}" />
+
+            <button class="loginBtn" type="submit">Entrar</button>
+            
+        </form>
+
+        <p>Nao tem conta? <a href="/signup">Cadastrar</a></p>
+
+       
+    </div>
+
+</body>
+
+</html>

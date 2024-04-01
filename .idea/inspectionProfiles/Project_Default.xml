@@ -1,0 +1,171 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="margin-left:" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="8">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="a" />
+            <item index="7" class="java.lang.String" itemvalue="div" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="94">
+            <item index="0" class="java.lang.String" itemvalue="mysqlclient" />
+            <item index="1" class="java.lang.String" itemvalue="sphinxcontrib-applehelp" />
+            <item index="2" class="java.lang.String" itemvalue="protobuf" />
+            <item index="3" class="java.lang.String" itemvalue="greenlet" />
+            <item index="4" class="java.lang.String" itemvalue="Babel" />
+            <item index="5" class="java.lang.String" itemvalue="html5" />
+            <item index="6" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="7" class="java.lang.String" itemvalue="psycopg2" />
+            <item index="8" class="java.lang.String" itemvalue="defusedxml" />
+            <item index="9" class="java.lang.String" itemvalue="marshmallow" />
+            <item index="10" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="11" class="java.lang.String" itemvalue="gitdb" />
+            <item index="12" class="java.lang.String" itemvalue="frozenlist" />
+            <item index="13" class="java.lang.String" itemvalue="snowballstemmer" />
+            <item index="14" class="java.lang.String" itemvalue="dt" />
+            <item index="15" class="java.lang.String" itemvalue="bootstrap4" />
+            <item index="16" class="java.lang.String" itemvalue="Pygments" />
+            <item index="17" class="java.lang.String" itemvalue="certifi" />
+            <item index="18" class="java.lang.String" itemvalue="sphinxcontrib-qthelp" />
+            <item index="19" class="java.lang.String" itemvalue="docutils" />
+            <item index="20" class="java.lang.String" itemvalue="pyparsing" />
+            <item index="21" class="java.lang.String" itemvalue="passlib" />
+            <item index="22" class="java.lang.String" itemvalue="GitPython" />
+            <item index="23" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="24" class="java.lang.String" itemvalue="aniso8601" />
+            <item index="25" class="java.lang.String" itemvalue="Flask-WTF" />
+            <item index="26" class="java.lang.String" itemvalue="py-email-validation" />
+            <item index="27" class="java.lang.String" itemvalue="wtf" />
+            <item index="28" class="java.lang.String" itemvalue="reportlab" />
+            <item index="29" class="java.lang.String" itemvalue="chartjs" />
+            <item index="30" class="java.lang.String" itemvalue="sphinxcontrib-htmlhelp" />
+            <item index="31" class="java.lang.String" itemvalue="aiohttp-retry" />
+            <item index="32" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="33" class="java.lang.String" itemvalue="click" />
+            <item index="34" class="java.lang.String" itemvalue="Flask-SQLAlchemy" />
+            <item index="35" class="java.lang.String" itemvalue="attrs" />
+            <item index="36" class="java.lang.String" itemvalue="pguard" />
+            <item index="37" class="java.lang.String" itemvalue="marshmallow-enum" />
+            <item index="38" class="java.lang.String" itemvalue="charset-normalizer" />
+            <item index="39" class="java.lang.String" itemvalue="PyMySQL" />
+            <item index="40" class="java.lang.String" itemvalue="Mako" />
+            <item index="41" class="java.lang.String" itemvalue="twilio" />
+            <item index="42" class="java.lang.String" itemvalue="idna" />
+            <item index="43" class="java.lang.String" itemvalue="PyJWT" />
+            <item index="44" class="java.lang.String" itemvalue="alembic" />
+            <item index="45" class="java.lang.String" itemvalue="async-timeout" />
+            <item index="46" class="java.lang.String" itemvalue="smmap" />
+            <item index="47" class="java.lang.String" itemvalue="SQLAlchemy" />
+            <item index="48" class="java.lang.String" itemvalue="numpy" />
+            <item index="49" class="java.lang.String" itemvalue="requests" />
+            <item index="50" class="java.lang.String" itemvalue="importlib-metadata" />
+            <item index="51" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="52" class="java.lang.String" itemvalue="myapp" />
+            <item index="53" class="java.lang.String" itemvalue="Flask-Login" />
+            <item index="54" class="java.lang.String" itemvalue="mysql-connector-python" />
+            <item index="55" class="java.lang.String" itemvalue="sphinxcontrib-devhelp" />
+            <item index="56" class="java.lang.String" itemvalue="alabaster" />
+            <item index="57" class="java.lang.String" itemvalue="zipp" />
+            <item index="58" class="java.lang.String" itemvalue="tomli" />
+            <item index="59" class="java.lang.String" itemvalue="bootstrap-py" />
+            <item index="60" class="java.lang.String" itemvalue="Flask-JWT-Extended" />
+            <item index="61" class="java.lang.String" itemvalue="urllib3" />
+            <item index="62" class="java.lang.String" itemvalue="itsdangerous" />
+            <item index="63" class="java.lang.String" itemvalue="Flask" />
+            <item index="64" class="java.lang.String" itemvalue="blinker" />
+            <item index="65" class="java.lang.String" itemvalue="marshmallow-sqlalchemy" />
+            <item index="66" class="java.lang.String" itemvalue="six" />
+            <item index="67" class="java.lang.String" itemvalue="sphinxcontrib-serializinghtml" />
+            <item index="68" class="java.lang.String" itemvalue="tzdata" />
+            <item index="69" class="java.lang.String" itemvalue="setuptools-scm" />
+            <item index="70" class="java.lang.String" itemvalue="Flask-MySQLdb" />
+            <item index="71" class="java.lang.String" itemvalue="imagesize" />
+            <item index="72" class="java.lang.String" itemvalue="packaging" />
+            <item index="73" class="java.lang.String" itemvalue="et-xmlfile" />
+            <item index="74" class="java.lang.String" itemvalue="pandas" />
+            <item index="75" class="java.lang.String" itemvalue="WTForms" />
+            <item index="76" class="java.lang.String" itemvalue="flask-marshmallow" />
+            <item index="77" class="java.lang.String" itemvalue="migrations" />
+            <item index="78" class="java.lang.String" itemvalue="Sphinx" />
+            <item index="79" class="java.lang.String" itemvalue="colorama" />
+            <item index="80" class="java.lang.String" itemvalue="Flask-Migrate" />
+            <item index="81" class="java.lang.String" itemvalue="sphinxcontrib-jsmath" />
+            <item index="82" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="83" class="java.lang.String" itemvalue="aiohttp" />
+            <item index="84" class="java.lang.String" itemvalue="multidict" />
+            <item index="85" class="java.lang.String" itemvalue="yarl" />
+            <item index="86" class="java.lang.String" itemvalue="pytz" />
+            <item index="87" class="java.lang.String" itemvalue="aiosignal" />
+            <item index="88" class="java.lang.String" itemvalue="Bootstrap-Flask" />
+            <item index="89" class="java.lang.String" itemvalue="Flask-RESTful" />
+            <item index="90" class="java.lang.String" itemvalue="webencodings" />
+            <item index="91" class="java.lang.String" itemvalue="flask-form" />
+            <item index="92" class="java.lang.String" itemvalue="openpyxl" />
+            <item index="93" class="java.lang.String" itemvalue="Pillow" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+          <option value="E265" />
+          <option value="E302" />
+          <option value="E114" />
+          <option value="E402" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="datetime.now" />
+          <option value="api.views.filial_pdv_views.FilialForm.*" />
+          <option value="tuple.String" />
+          <option value="tuple.Date" />
+          <option value="tuple.Float" />
+          <option value="tuple.Integer" />
+          <option value="api.views.fornecedor_views.validate_cnpj" />
+          <option value="api.models.mix_produto_model.usuario" />
+          <option value="str.*" />
+          <option value="api.views.pedido_views.produto_query" />
+          <option value="sqlalchemy.orm.joinedload_all" />
+          <option value="app.flask_sqlalchemy" />
+          <option value="app.flask_marshmallow" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

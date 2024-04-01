@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %}Historico{% endblock %}
+
+{% block content %}
+
+<body>
+    
+    <div class="container">
+        <div class="tabela">
+            <div class="historico">
+                <h3>
+                    Histórico
+                </h3>
+
+                <div
+                    style="display: flex; width: 100%; flex-direction: row; justify-content: start; margin-block: 18px; gap: 12px;">
+                    <div class="ferramentasHistorico"
+                        style="display: flex; flex-direction: row; gap: 12px; align-items: center;">
+                        <label style="margin-top: 6px;">Filtrar Por Mes:</label>
+                    </div>
+
+                    <form id="filterForm" style="margin-top: 6px;">
+
+                        <label style="margin-left: 6px;  margin-right: 10px;"> | Filtrar Por Modo:</label>
+
+                        <input type="radio" name="filterOption" value="all" id="allOption" checked>
+                        <label for="allOption">Todos</label>
+
+                        <input style="margin-left: 12px;" type="radio" name="filterOption" value="registro manual"
+                            id="registromanualOption">
+                        <label for="registromanualOption">Registro Manual</label>
+
+                        <input style="margin-left: 12px;" type="radio" name="filterOption" value="compra"
+                            id="comprasOption">
+                        <label for="comprasOption">Compra</label>
+                    </form>
+
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        // Function to format date to month/year
+                        function formatDateToMonthYear(dateString) {
+                            var date = new Date(dateString);
+                            var monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+                            ];
+                            var month = monthNames[date.getMonth()];
+                            var year = date.getFullYear();
+                            return month + " " + year;
+                        }
+
+                        // Create the select element
+                        var selectElement = $("<select id='selectMonthYear'></select>");
+
+                        // Reference to the table
+                        var tableId = "#tabelaHistorico";
+
+                        // Array to store unique month/year values
+                        var uniqueValues = [];
+
+                        // Iterate over the table rows to extract unique month/year values
+                        $(tableId + " tbody tr").each(function () {
+                            var dateValue = $(this).find("td:eq(3)").text().trim();
+                            var monthYear = formatDateToMonthYear(dateValue);
+                            if (monthYear && !uniqueValues.includes(monthYear)) {
+                                uniqueValues.push(monthYear);
+                            }
+                        });
+
+                        // Append "All" option to the select element
+                        selectElement.append("<option value=''>Todos</option>");
+
+                        // Append options for unique month/year values to the select element
+                        uniqueValues.forEach(function (value) {
+                            selectElement.append("<option value='" + value + "'>" + value + "</option>");
+                        });
+
+                        // Appending the select element to the ferramentas div
+                        $(".ferramentasHistorico").append(selectElement);
+
+                        // Add event listener for form changes
+                        $('#filterForm input[type="radio"], #selectMonthYear').change(filterTable);
+
+                        // Function to filter the table rows
+                        function filterTable() {
+                            var selectedOption = $('#filterForm input[name="filterOption"]:checked').val().toLowerCase();
+                            var selectedMonthYear = $('#selectMonthYear').val();
+
+                            // Get the table rows
+                            var rows = $('#tabelaHistorico tbody tr');
+
+                            // Loop through all table rows
+                            rows.each(function () {
+                                var cell = $(this).find('td:eq(4)');
+                                var indicatorText = cell.text().trim().toLowerCase();
+                                var dateValue = $(this).find("td:eq(3)").text().trim();
+                                var monthYear = formatDateToMonthYear(dateValue);
+
+                                // Show or hide rows based on the selected filter option and month/year
+                                if ((selectedOption === 'all' || indicatorText === selectedOption) &&
+                                    (selectedMonthYear === '' || monthYear === selectedMonthYear)) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+
+                                // Function to scroll to the last visible row
+
+
+
+                            });
+                        }
+
+
+
+                        // Trigger initial filtering and scrolling
+
+
+                    });
+                </script>
+
+
+
+
+
+                <div>
+                    <table id="tabelaHistorico">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">
+                                    Codigo
+                                </th>
+                                <th style="width: 5%;">
+                                    Codigo MP
+                                </th>
+                                <th>
+                                    Matéria Prima
+                                </th>
+                                <th>
+                                    Data
+                                </th>
+                                <th>
+                                    Modo
+                                </th>
+                                <th>
+                                    Diferença
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if not historico %}
+                            <tr class="semCompras">
+                                <td colspan="7">
+                                    <h3 style="font-weight: 300; color: lightgray; margin-block: 28px;">
+                                        Sem Historicos</h3>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% for hst in historico %}
+                            <tr>
+                                <td>
+                                    {{hst.id_hst}}
+                                </td>
+                                <td>
+                                    {{hst.id_mp}}
+                                </td>
+                                <td>
+                                    {{hst.nome_mp}}
+                                </td>
+                                <td>
+                                    {{hst.date_change | custom_datetime_format}}
+                                </td>
+                                <td>
+                                    {{hst.modo_hst}}
+                                </td>
+                                <td
+                                    style="color: {% if hst.difference_hst < 0 %}red{% elif hst.difference_hst > 0 %}#32c232{% endif %};">
+
+                                    {{ '+' if hst.difference_hst > 0 else '' }}{{ hst.difference_hst }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <br>
+                    <div style="display: none; width: 100%; justify-content: end; ">
+                        <div class="pagination">
+                            <button class="pageBtn" id="prevPage">Anterior</button>
+                            <span style="margin-inline: 15px; text-decoration: underline; font-weight: 500;"
+                                id="pageNumber">1</span>
+                            <button class="pageBtn" id="nextPage">Próximo</button>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

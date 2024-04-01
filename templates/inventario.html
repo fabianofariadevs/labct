@@ -1,0 +1,473 @@
+{% extends "base.html" %}
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+
+<style>
+    .historico {
+        margin-top: 15px;
+    }
+
+    .titulo {
+        display: flex;
+        flex-direction: row;
+
+    }
+
+    .titulo button {
+        margin-left: 21px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .digitarManual {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dateSelector {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+    }
+
+    .topForm {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: fit-content;
+        width: 100%;
+    }
+
+    .pageBtn {
+        all: unset;
+    }
+
+    .pageBtn:hover {
+        cursor: pointer;
+        color: black;
+        text-decoration: underline;
+    }
+
+    .pageBtn:disabled {
+        color: rgb(175, 175, 175);
+    }
+
+    .semCompras:hover {
+        background-color: white;
+        text-decoration: none;
+        cursor: default;
+    }
+</style>
+
+<body>
+
+    <div class="container">
+
+        <div class="tabela">
+
+            <div class="header">
+
+                <div class="InventarioTitulo">
+                    <h3>Inventário </h3>
+                </div>
+            </div>
+
+
+            <div class="titulo">
+                <div>
+                    <h3>Estoque</h3>
+                </div>
+                <div class="ativarManual">
+                    <button id="manualChangeBtn" style="margin-top: 6px;" class="btn-cadastrar">Ativar Registro
+                        Manual</button>
+                </div>
+            </div>
+
+            <br>
+
+            <form action="/inventario" method="POST">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">
+                                Codigo MP
+                            </th>
+                            <th>
+                                Materia Prima
+                            </th>
+                            <th style="width: 10%;">
+                                Unidade
+                            </th>
+                            <th>
+                                Quantidade
+                            </th>
+
+                            <th style="width: 8%;">indicador</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if not estoque %}
+                            <tr class="semCompras">
+                                <td colspan="6">
+                                    <h3 style="font-weight: 300; color: lightgray; margin-block: 28px;">
+                                        Sem Materias Primas Cadastradas</h3>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% for estq in estoque %}
+                        <tr>
+                            <td>
+                                {{estq.id_mp}}
+                            </td>
+                            <td>
+                                {{estq.nome_mp}}
+                            </td>
+                            <td>
+                                {{estq.unidade_mp}}
+                            </td>
+                            <td>
+                                <span class="quantity" style="color: blue;">{{estq.quantidade_estq}}</span>
+                                <input min="0" type="number" step="0.001" name="quantidade_estq" id="quantidade_estq"
+                                    value="{{estq.quantidade_estq}}" class="hidden">
+
+                            </td>
+
+                            <td
+                                style="background-color: {% if estq.gms_mp - estq.quantidade_estq > 0 %}yellow; color: red; font-weight: bold;{% else %}lightgreen; color: darkgreen;{% endif %}">
+                                {% if estq.gms_mp - estq.quantidade_estq > 0 %}
+                                Comprar
+                                {% else %}
+                                OK
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div style="display: flex;
+                                        justify-content: end;
+                                        margin-top: 24px;">
+                    <button type="submit" id="submitButton" class="btn btn-dark hidden">Salvar Registro</button>
+                </div>
+            </form>
+
+            <!-- Fazer Inventario Modal -->
+            <div class="modal fade" id="fazerInventarioModal" role="dialog" aria-labelledby="editModalLabel"
+                tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" style="min-width: 28%;" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Fazer Inventário</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="margin-top: -22px !important;">
+
+
+
+                            <hr>
+
+                            <div class="topForm">
+                                <form action="/salvar_inventario" method="post" style="min-width: 100%;">
+                                    
+                                    <h6>Selecione as matérias primas que deseja criar o inventário.</h6>
+                                    <table style="min-width: 100% !important;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;"><input type="checkbox" id="selectAll"></th>
+                                                <th>ID</th>
+                                                <th>MP</th>
+                                                <th>Unidade</th>
+                                                <th>Quantidade</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for mp in materiasprimas %}
+                                            <tr>
+                                                <td><input type="checkbox" name="selected_items" value="{{ mp.id_mp }}">
+                                                </td>
+                                                <td>{{mp.id_mp}}</td>
+                                                <td>{{mp.nome_mp}}</td>
+                                                <td>{{mp.unidade_mp}}</td>
+                                                <td>________</td>
+
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div style="padding-block: 12px; display: flex; flex-direction: column; width: 100%; justify-content: end;">
+                                        <label for="datePicker">Selecione a data do inventário:</label>
+                                        <input type="date" id="datePicker" name="datePicker" required>
+                                    </div>
+                                    
+                                    <div style="display: flex; width: 100%; justify-content: end; padding-block:18px ;">
+                                        <button class="btn btn-dark" type="submit">Salvar</button>
+                                    </div>
+
+
+                                </form>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        // Handle click event of "Select All" checkbox
+                                        $('#selectAll').click(function() {
+                                            // Get the state of the "Select All" checkbox
+                                            var isChecked = $(this).prop('checked');
+                                            // Set the state of all checkboxes in the table
+                                            $('input[name="selected_items"]').prop('checked', isChecked);
+                                        });
+                                    });
+                                </script>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+           
+
+
+            <div class="listaInventario">
+                <br>
+                <h3>Lista de Inventários Abertos</h3>
+                <div
+                    style="display: flex; width: 100%; flex-direction: row; justify-content: start; margin-block: 18px; gap: 12px;">
+                    <div class="ferramentas">
+                        <label style="font-weight: 400;">Filtrar Por Mes:</label>
+                    </div>
+
+                    <button class="btn-cadastrar" type="button" data-toggle="modal"
+                        data-target="#fazerInventarioModal"> + Criar Novo Inventário</button>
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        // Creating a select element
+                        var selectElement = $("<select></select>");
+
+                        // Reference to the table
+                        var tableId = "#tabelaInventarios";
+
+                        // Array to store unique values for MM/YYYY
+                        var uniqueMonthYearValues = [];
+
+                        // Month names array
+                        var monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+                        // Iterate over the table rows to extract unique values for MM/YYYY
+                        $(tableId + " tbody tr").each(function () {
+                            var firstColumnValue = $(this).find("td:eq(1)").text().trim();
+                            if (firstColumnValue) {
+                                // Extracting month and year from the formatted date string
+                                var dateParts = firstColumnValue.split(" ")[0].split("/");
+                                if (dateParts.length === 3) {
+                                    var monthIndex = parseInt(dateParts[1]) - 1; // Month index (0-based)
+                                    var monthName = monthNames[monthIndex]; // Get month name from array
+                                    var year = dateParts[2];
+                                    var monthYearValue = monthName + "/" + year;
+                                    if (!uniqueMonthYearValues.includes(monthYearValue)) {
+                                        uniqueMonthYearValues.push(monthYearValue);
+                                    }
+                                }
+                            }
+                        });
+
+                        // Append "All" option to the select element
+                        selectElement.append("<option value=''>Todos</option>");
+
+                        // Append options for unique values to the select element
+                        uniqueMonthYearValues.forEach(function (value) {
+                            selectElement.append("<option value='" + value + "'>" + value + "</option>");
+                        });
+
+                        // Appending the select element to the ferramentas div
+                        $(".ferramentas").append(selectElement);
+
+                        // Add event listener to the select element to filter the table
+                        selectElement.change(function () {
+                            var selectedValue = $(this).val();
+                            $(tableId + " tbody tr").each(function () {
+                                var firstColumnValue = $(this).find("td:eq(1)").text().trim();
+                                // Extracting month and year from the formatted date string
+                                var dateParts = firstColumnValue.split(" ")[0].split("/");
+                                var monthIndex = parseInt(dateParts[1]) - 1; // Month index (0-based)
+                                var monthName = monthNames[monthIndex]; // Get month name from array
+                                var year = dateParts[2];
+                                var monthYearValue = monthName + "/" + year;
+                                if (selectedValue === "" || monthYearValue === selectedValue) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+
+<table id="tabelaInventarios">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Data Inventário</th>
+            <th>Situação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if not inventarioAberto %}
+                        <tr class="semCompras">
+                            <td colspan="3">
+                                <h3 style="font-weight: 300; color: rgb(189, 189, 189); margin-block: 28px;">Sem Inventários em
+                                    Abertos</h3>
+                            </td>
+                        </tr>
+        {% endif %}
+        {% for invtAberto in inventarioAberto %}
+        <tr data-toggle="modal" data-target="#inventarioDadosModal{{ invtAberto.id_invt }}">
+            <td>{{ invtAberto.id_invt }}</td>
+            <td>{{ invtAberto.data_invt | datetimeformat }}</td>
+            <td>{{ invtAberto.estado_invt }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% for invtAberto in inventarioAberto %}
+<!-- InventarioDados Modal -->
+<div class="modal fade" id="inventarioDadosModal{{ invtAberto.id_invt }}" role="dialog" aria-labelledby="editModalLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="inventarioDadosModalLabel">Inventário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-top: -22px !important;">
+                <hr>
+                
+                <h4>{{ invtAberto.data_invt | datetimeformat }}</h4>
+                <div class="topForm">
+                    <form action="fechar_inventario" method="post" style="min-width: 100%;">
+                        <table style="min-width: 100% !important;">
+                            <thead>
+                                <tr>
+                                    
+                                    <th style="width: 5%;">Codigo Matéria Prima</th>
+                                    <th>Matéria Prima</th>
+                                    <th>Estoque Atual</th>
+                                    <th>Nova Quantidade</th>
+                                    <th style="width: 10%;">Unidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invtDados in inventarioDados %}
+                                {% if invtDados.id_invt == invtAberto.id_invt %}
+                                <tr>
+                                    
+                                    <td>{{invtDados.id_mp}}</td>
+                                    <td>{{invtDados.nome_mp}}</td>
+                                    <td><span style="color: blue;">{{invtDados.quantidade_estq}}</span></td>
+                                    <td>
+                                        <input min="0.001" type="number" step="0.001" name="quantidade_invtdados" id="quantidade_invtdados"
+                                        value="{{invtDados.quantidade_invtdados}}" required >
+                                        <!-- Add a hidden input field for the ID associated with the quantity -->
+                                        <input type="hidden" name="id_mp" value="{{invtDados.id_mp}}">
+                                        <input type="hidden" name="id_invt" value="{{invtDados.id_invt}}">
+                                    </td>
+                                    <td>{{invtDados.unidade_mp}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div style="display: flex; width: 100%; justify-content: end; padding-block: 12px;">
+                            <button class="btn btn-dark" type="submit">Salvar</button>     
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+                <br>
+                <hr>
+
+                <div style="display: none;">
+                    <form action="/inventario" method="get">
+
+                        <select id="monthSelector" name="selected_month">
+                            <option value="">Mes</option>
+                            {% for month in available_months %}
+                            <option value="{{ month }}">{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Filtrar</button>
+                    </form>
+
+                    <table>
+                        <thead>
+
+                            <tr>
+                                <th style="width: 5%;">Inventario #</th>
+                                <th>Data</th>
+                                <th>Matéria Prima</th>
+                                <th>Quantidade</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {% for invtdados in invtdados %}
+
+                            <tr>
+                                <td>{{invtdados.id_invt}}</td>
+                                <td>{{invtdados.data_invt | datetimeformat}}</td>
+                                <td>{{invtdados.id_mp}}</td>
+                                <td>{{invtdados.quantidade_invtdados}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+
+           
+
+        </div>
+
+
+    </div>
+</body>
+
+<script>
+    document.getElementById('manualChangeBtn').addEventListener('click', function () {
+        var spans = document.querySelectorAll('.quantity');
+        var inputs = document.querySelectorAll('input[type="number"]');
+        var submitButton = document.getElementById('submitButton');
+        for (var i = 0; i < spans.length; i++) {
+            spans[i].classList.toggle('hidden');
+        }
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].classList.toggle('hidden');
+        }
+        submitButton.classList.toggle('hidden');
+    });
+</script>
+
+
+{% endblock %}
