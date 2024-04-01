@@ -486,8 +486,6 @@ def editMateriaPrima(id):
 
 @app.route('/inventario', methods=['GET', 'POST'])
 def inventario():
-
-
     today_date = datetime.now()
     formatted_date = format_date(today_date, format='full', locale='pt')
 
@@ -498,8 +496,6 @@ def inventario():
     materiasprimas = materiasprimas_model.MateriasPrimas.query.filter_by(user_id=current_user.id).all()
     materiasprimas_schema = MateriasPrimasSchema(many=True)
     serialized_data_mp = materiasprimas_schema.dump(materiasprimas)
-
-
 
     if request.method == 'POST':
         new_quantities = request.form.getlist('quantidade_estq')
@@ -1025,11 +1021,8 @@ def editReceita(id):
 
 #DELETE
 @app.route('/delete-receita/<int:id>', methods=['POST'])
-def deleteReceita(id):
-    
-     # Fetch the receitas record
+def deleteReceita(id):  # Fetch the receitas record
     receitas = receitas_model.Receitas.query.get_or_404(id)
-    
     try:
         # Delete child records from ReceitaMateriasPrimas table
         receitasmateriaprimas_model.ReceitaMateriasPrimas.query.filter_by(id_rct=id).delete()
@@ -1045,6 +1038,56 @@ def deleteReceita(id):
     return redirect(url_for('receitas', id=id) )
    
 
+
+## PRODUCAO ############################################################################################################
+
+@app.route('/produzir_receita', methods=['POST'])
+def produzir_receita():
+    # Get the recipe id and quantity from the form data
+    id_rct = request.form.get('id_rct')
+    quantidade = request.form.get('quantidade')
+
+    # Get the recipe from the database
+    receita = receitas_model.Receitas.query.get(id_rct)
+
+    # Check if the recipe exists
+    if not receita:
+        return "Receita não encontrada", 404
+
+    # Get the ingredients for the recipe
+    ingredientes = receitasmateriaprimas_model.ReceitaMateriasPrimas.query.filter_by(id_rct=id_rct).all()
+
+    # Check if each ingredient is available in the necessary quantity
+    for ingrediente in ingredientes:
+        estoque_item = estoque_model.Estoque.query.filter_by(id_mp=ingrediente.id_mp).first()
+        if estoque_item.quantidade_estq < ingrediente.quantidade * quantidade:
+            return f"Não há quantidade suficiente de {ingrediente.nome_mp} em estoque", 400
+
+    # If all ingredients are available, subtract from the stock and update the inventory
+    for ingrediente in ingredientes:
+        estoque_item = estoque_model.Estoque.query.filter_by(id_mp=ingrediente.id_mp).first()
+        estoque_item.quantidade_estq -= ingrediente.quantidade * quantidade
+
+        # Update the inventory
+        inventariodados = inventariodados_model.InventarioDados.query.filter_by(id_mp=ingrediente.id_mp).first()
+        inventariodados.quantidade_invtdados = estoque_item.quantidade_estq
+
+        # Register the production in the history
+        historico = historico_model.Historico(
+            date_change=datetime.now(),
+            id_mp=ingrediente.id_mp,
+            nome_mp=ingrediente.nome_mp,
+            ultimaquantidade_hst=estoque_item.quantidade_estq + ingrediente.quantidade * quantidade,
+            novaquantidade_hst=estoque_item.quantidade_estq,
+            difference_hst=-ingrediente.quantidade * quantidade,
+            modo_hst='Produção',
+            user_id=current_user.id
+        )
+        db.session.add(historico)
+
+    db.session.commit()
+
+    return "Receita produzida com sucesso", 200
 
 
 if __name__ == '__main__':
